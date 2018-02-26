@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>云助手</title>
+    {:_js('jquery-3.3.1.min')}
+</head>
+<body>
+<h3>添加账号</h3>
+<br>
+<form action="{:url('account')}" onsubmit="return push(this)">
+    平台:
+    <select id="pid" name="pid">
+        {foreach $platform as $val}
+        <option value="{$val['pid']}">{$val['platform_name']}</option>
+        {/foreach}
+    </select>
+    <br><br>
+    Cookie: <input type="text" name="cookie" id="cookie">
+    <br><br>
+    <input type="submit" value="提交">
+</form>
+<h3>添加操作</h3>
+<br>
+<form action="{:url('action')}" onsubmit="return push(this)">
+    平台:
+    <select name="pid" id="sa" onchange="return showAction(this);">
+        {foreach $platform as $val}
+        <option value="{$val['pid']}">{$val['platform_name']}</option>
+        {/foreach}
+    </select>
+    <br><br>
+    操作:
+    <select name="aid" id="aid">
+
+    </select>
+    <br><br>
+    <input type="submit" value="提交">
+</form>
+
+</body>
+<script>
+    $(function () {
+        showAction(document.getElementById('sa'));
+    });
+
+    function showAction(sel) {
+        console.log(123);
+        $.ajax({
+            url: "{:url('action')}",
+            data: {pid: $(sel).val()},
+            success: function (obj) {
+                $('#aid').empty();
+                for (var i = 0; i < obj.length; i++) {
+                    var opt = document.createElement('option');
+                    opt.value = obj[i].aid;
+                    opt.innerText = obj[i].action_name;
+                    $('#aid').append(opt);
+                }
+            }
+        });
+    }
+
+    function push(form) {
+        $.ajax({
+            url: form.action,
+            type: 'post',
+            data: $(form).serialize(),
+            success: function (obj) {
+                alert(obj.msg)
+            }
+        });
+        return false;
+    }
+</script>
+</html>

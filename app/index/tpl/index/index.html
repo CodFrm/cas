@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>云助手</title>
+    {:_js('jquery-3.3.1.min')}
+</head>
+<body>
+<h2>页面就先随便弄一下,emmm</h2>
+<ul>
+    <li>贴吧签到</li>
+    <li>bilibili签到</li>
+    <li>........</li>
+</ul>
+<h3>登录:</h3>
+<form onsubmit="return push(this);">
+    账号: <input type="text" name="u">
+    <br><br>
+    密码: <input type="text" name="p">
+    <br><br>
+    <input type="submit" value="登录">
+</form>
+</body>
+<script>
+    function push(form) {
+        $.ajax({
+            url: "{:url('login')}",
+            type: 'post',
+            data: $(form).serialize(),
+            success: function (obj) {
+                alert(obj.msg)
+                if (obj.code == 0) {
+                    window.location="{:url('user','index')}";
+                }
+            }
+        });
+        return false;
+    }
+</script>
+</html>
