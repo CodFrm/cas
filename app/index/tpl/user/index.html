@@ -37,12 +37,30 @@
     <br><br>
     <input type="submit" value="提交">
 </form>
-
+<h3>任务列表</h3>
+<br>
+{foreach $task as $item}
+<div>
+    {$item['action_name']}
+    <br>
+    <button onclick="return run(this);" value="{$item['tid']}">手动执行一次</button>
+</div>
+{/foreach}
 </body>
 <script>
     $(function () {
         showAction(document.getElementById('sa'));
     });
+
+    function run(btn) {
+        $.ajax({
+            url: "{:url('run')}",
+            data: {tid: $(btn).val()},
+            success: function (obj) {
+                alert(obj.msg);
+            }
+        });
+    }
 
     function showAction(sel) {
         console.log(123);

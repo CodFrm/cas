@@ -68,7 +68,7 @@ function _post($key, $default = false) {
  * @author Farmer
  * @param $key
  * @param bool $default
- * @return bool
+ * @return string
  */
 function _cookie($key, $default = false) {
     return _readValue($_COOKIE, $key, $default);

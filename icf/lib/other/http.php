@@ -58,7 +58,6 @@ class http {
         if (!empty($url)) {
             $this->setUrl($url);
         }
-        echo $url."\n";
         curl_setopt($this->curl, CURLOPT_POST, 0);
         return $this->access();
     }

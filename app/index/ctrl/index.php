@@ -10,6 +10,7 @@
 namespace app\index\ctrl;
 
 use app\common\model\user;
+use icf\lib\db;
 
 class index {
     public function index() {

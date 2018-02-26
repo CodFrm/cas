@@ -11,12 +11,14 @@ namespace app\admin\ctrl;
 
 
 use app\common\api\BaiduPlatform;
+use app\index\model\task;
 use icf\lib\db;
 use icf\lib\log;
 
 class monitor {
     public function __construct() {
         $w_ip = ['127.0.0.1', '::', 'localhost'];
+        echo getip();
         if (!in_array(getip(), $w_ip)) {
             _404();
             exit();
@@ -54,43 +56,30 @@ class monitor {
     private function monitor() {
         $log = new log();
         $log->notice('监控开启');
-//        while (1) {
-        //查询未操作记录
-        $row = db::table('action_param as a')->join(':action as b', 'a.aid=b.aid')
-            ->join(':platform as c', 'b.pid=c.pid')
-            ->where('action_last_time', strtotime(date('Y/m/d 03:00:00')), '<')
-            ->where('action_status', 1)->find();
-        if ($row) {
-            db::table('action_param')->where('param_id', $row['param_id'])->update(['action_status' => 2]);
-            try {
-                $platApi = 'app\\common\\api\\' . $row['platform_api'];
-                $platApi = new $platApi(['uid' => $row['uid'], 'pid' => $row['pid']]) ?: new BaiduPlatform(_post('cookie'));
-                $param = $platApi->VerifyAction($row['action_api']);
-                if ($param) {
-                    $row['param'] = $param;
-                    $param = implode(',', $param);
-                    db::table('action_param')->update(['action_param' => $param]);
-                    $row['action_param'] = $param;
-                    $ret = call_user_func([
-                        $platApi, $row['action_api']
-                    ], $row);
-//                    break;
-                } else {
+        while (1) {
+            $row = db::table('action_task')
+                ->where('task_last_time', strtotime(date('Y/m/d 03:00:00')), '<')
+                ->where('task_status', 1)->find();
+            if ($row) {
+                db::table('action_task')->where('tid', $row['tid'])->update(['task_status' => 2]);
+                try {
+                    $task = new task($row['tid']);
+                    $ret = $task->run();
                     $log = new \app\common\model\log($row['uid']);
-                    $log->action(json(['aid' => $row['aid'], 'msg' => '操作失败']), 2);
+                    $log->action(json($ret), $ret['code']);
+                } catch (\Exception $e) {
+                    $log = new \app\common\model\log($row['uid']);
+                    $log->system(json(['file' => $e->getFile(), 'line' => $e->getLine(), 'error' => $e->getMessage()]), 6);
                 }
-            } catch (\Exception $e) {
-                $log = new \app\common\model\log($row['uid']);
-                $log->system(json(['file' => $e->getFile(), 'line' => $e->getLine(), 'error' => $e->getMessage()]), 6);
+                db::table('action_task')->where('tid', $row['tid'])
+                    ->update(['task_last_time' => time(), 'task_status' => 1]);
             }
-            db::table('action_param')->where('param_id', $row['param_id'])
-                ->update(['action_last_time' => time(), 'action_status' => 1]);
+            if (config('monitor_status') == 11) {
+                $log->notice('监控停止');
+                config('monitor_status', 0);
+            }
+            sleep(10);
         }
-        if (config('monitor_status') == 11) {
-            $log->notice('监控停止');
-            config('monitor_status', 0);
-        }
-//            sleep(10);
-//        }
     }
+
 }

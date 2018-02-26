@@ -14,12 +14,21 @@ use app\common\api\BaiduPlatform;
 use app\common\ctrl\authCtrl;
 use app\common\Error;
 use app\common\model\platform;
+use app\index\model\task;
 use icf\lib\db;
 
 class user extends authCtrl {
     public function index() {
+        view()->assign('task', task::getUserAllTaskMsg($this->uid));
         view()->assign('platform', db::table('platform')->select()->fetchAll());
         view()->display();
+    }
+
+    public function run($tid) {
+        $task = new task($tid);
+        $ret = $task->run();
+        unset($ret['ret']['error_msg']);
+        return $ret;
     }
 
     public function postAccount() {
@@ -45,7 +54,7 @@ class user extends authCtrl {
     public function postAction() {
         $pid = _post('pid');
         $aid = _post('aid');
-        if (db::table('action_param')->where('uid', _cookie('uid'))->where('aid', $aid)->count()) {
+        if (db::table('action_task')->where('uid', _cookie('uid'))->where('aid', $aid)->count()) {
             return new Error(-1, '已经添加过一次');
         }
         if (!($accountRow = db::table('platform_account')->where(['pid' => $pid, 'uid' => _cookie('uid')])->find())) {
@@ -53,9 +62,9 @@ class user extends authCtrl {
         }
         $ret = $this->verify_action($pid, $aid);
         if (is_array($ret)) {
-            db::table('action_param')
+            db::table('action_task')
                 ->insert(['uid' => 1, 'puid' => $accountRow['puid'], 'aid' => $aid,
-                    'action_param' => implode(',', $ret['param']), 'action_last_time' => 0, 'action_status' => 1]);
+                    'task_param' => json($ret['param']), 'task_last_time' => 0, 'task_status' => 1]);
             return new Error(0, '添加成功');
         } else {
             return new Error(-1, $ret);
