@@ -30,7 +30,7 @@ class monitor {
      * @author Farmer
      */
     public function start() {
-        if (config('monitor_status') == 1 && false) {
+        if (config('monitor_status') == 1) {
             return 'error';
         }
         config('monitor_status', 1);
@@ -58,8 +58,13 @@ class monitor {
         $log->notice('监控开启');
         while (1) {
             $row = db::table('action_task')
-                ->where('task_last_time', strtotime(date('Y/m/d 03:00:00')), '<')
+                ->where('task_last_time', strtotime(date('Y/m/d 00:00:00')), '<')
                 ->where('task_status', 1)->find();
+            //3点开始
+            if (date('H') < 3) {
+                sleep(90);
+                continue;
+            }
             if ($row) {
                 db::table('action_task')->where('tid', $row['tid'])->update(['task_status' => 2]);
                 try {
@@ -73,13 +78,15 @@ class monitor {
                 }
                 db::table('action_task')->where('tid', $row['tid'])
                     ->update(['task_last_time' => time(), 'task_status' => 1]);
+                continue;
             }
             if (config('monitor_status') == 11) {
-                $log->notice('监控停止');
-                config('monitor_status', 0);
+                break;
             }
             sleep(10);
         }
+        $log->notice('监控停止');
+        config('monitor_status', 0);
     }
 
 }

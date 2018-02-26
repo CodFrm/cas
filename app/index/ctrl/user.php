@@ -27,7 +27,9 @@ class user extends authCtrl {
     public function run($tid) {
         $task = new task($tid);
         $ret = $task->run();
-        unset($ret['ret']['error_msg']);
+        if (isset($ret['ret']['error_msg'])) {
+            unset($ret['ret']['error_msg']);
+        }
         return $ret;
     }
 
