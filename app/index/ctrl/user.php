@@ -65,7 +65,7 @@ class user extends authCtrl {
         $ret = $this->verify_action($pid, $aid);
         if (is_array($ret)) {
             db::table('action_task')
-                ->insert(['uid' => 1, 'puid' => $accountRow['puid'], 'aid' => $aid,
+                ->insert(['uid' => _cookie('uid'), 'puid' => $accountRow['puid'], 'aid' => $aid,
                     'task_param' => json($ret['param']), 'task_last_time' => 0, 'task_status' => 1]);
             return new Error(0, '添加成功');
         } else {
