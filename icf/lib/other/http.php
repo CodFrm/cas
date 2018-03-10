@@ -29,6 +29,10 @@ class http {
         curl_setopt($this->curl, $key, $value);
     }
 
+    public function getHeader(){
+    return curl_getinfo($this->curl);
+    }
+
     public function setRedirection($value = 1) {
         curl_setopt($this->curl, CURLOPT_FOLLOWLOCATION, $value);
     }
