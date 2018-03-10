@@ -34,7 +34,7 @@ class WangyiPlatform extends BasePlatform {
         return true;
     }
 
-    public function SignLive($actMsg) {
+    public function SignMusic($actMsg) {
         $cookie = $actMsg['pu_cookie'];
         $this->httpRequest->setCookie($cookie);
         $csrf_token = getStrMid($cookie, '__csrf=', ';');
