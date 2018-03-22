@@ -37,6 +37,17 @@
     <br><br>
     <input type="submit" value="提交">
 </form>
+<br><br>
+<h3>账号列表</h3>
+{foreach $account as $item}
+<div>
+    {$item['platform_name']}:{$item['pu_u']}
+    <br>
+    <button onclick="return update_cookie(this);" value="{$item['puid']}">更新cookie</button>
+</div>
+{/foreach}
+如果Cookie是空的则为删除
+<br><br>
 <h3>任务列表</h3>
 <br>
 {foreach $task as $item}
@@ -58,6 +69,24 @@
             data: {tid: $(btn).val()},
             success: function (obj) {
                 alert(obj.msg);
+            }
+        });
+    }
+
+    function update_cookie(btn) {
+        var cookie = prompt('请输入你账号的新Cookie(如果是空的则为删除)');
+        if (cookie == null) {
+            return;
+        }
+        $.ajax({
+            url: "{:url('update_cookie')}",
+            type: 'POST',
+            data: {puid: $(btn).val(), cookie: cookie},
+            success: function (obj) {
+                alert(obj.msg);
+                if (obj.code == 1) {
+                    $(btn).parent().remove();
+                }
             }
         });
     }

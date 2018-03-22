@@ -21,6 +21,10 @@ class user extends authCtrl {
     public function index() {
         view()->assign('task', task::getUserAllTaskMsg($this->uid));
         view()->assign('platform', db::table('platform')->select()->fetchAll());
+        view()->assign('account', db::table('platform_account as a')
+            ->join(':platform as b', 'a.pid=b.pid')
+            ->where('uid', $this->uid)
+            ->select()->fetchAll());
         view()->display();
     }
 
@@ -29,6 +33,23 @@ class user extends authCtrl {
         $ret = $task->run();
         if (isset($ret['ret']['error_msg'])) {
             unset($ret['ret']['error_msg']);
+        }
+        return $ret;
+    }
+
+    public function update_cookie() {
+        $actDb = db::table('platform_account')->where('uid', $this->uid)
+            ->where('puid', input('post.puid'));
+        $ret = $actDb->find();
+        if (!$ret) {
+            return new Error(-1, '没有找到相应的修改记录');
+        }
+        if (input('post.cookie')) {
+            $actDb->update(['pu_cookie' => input('post.cookie')]);
+            $ret = new Error(0, '修改成功');
+        } else {
+            $actDb->delete();
+            $ret = new Error(1, '删除成功');
         }
         return $ret;
     }
