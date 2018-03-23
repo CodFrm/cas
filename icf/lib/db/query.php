@@ -10,6 +10,7 @@
 
 namespace icf\lib\db;
 
+use icf\lib\db;
 use PDO;
 
 class query {
@@ -26,6 +27,15 @@ class query {
         }
         //处理表前缀
         $this->table = input('config.db.prefix') . str_replace('|', ',' . input('config.db.prefix'), $table);
+    }
+
+    public function reconnect() {
+        static::$db = null;
+        self::$db_type = input('config.db.type');
+        $dns = call_user_func('icf\\lib\\db\\' . self::$db_type . '::dns');
+        self::$db = new PDO($dns, input('config.db.user'), input('config.db.pwd'));
+        self::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        self::$db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
     }
 
     private $table = '';

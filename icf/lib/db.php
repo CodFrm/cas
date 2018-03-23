@@ -30,4 +30,8 @@ class db {
     public static function lastinsertid() {
         return (new query(''))->lastinsertid();
     }
+
+    public static function reconnect(){
+        (new query())->reconnect();
+    }
 }
