@@ -40,7 +40,7 @@ class view {
      *
      * @author Farmer
      * @param string $param
-     * @param string $value
+     * @param mixed $value
      * @return
      *
      */
