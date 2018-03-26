@@ -50,33 +50,33 @@ class monitor {
         $log->notice('监控开启');
         while (1) {
             try {
-                $row = db::table('action_task')
-                    ->where('task_last_time', strtotime(date('Y/m/d 00:00:00')), '<')
-                    ->where('task_status', 1)->find();
-                //3点开始
-                if (config('monitor_status') == 11) {
+                if (config('monitor_status') != 1) {
+                    //停止监控
                     break;
                 }
                 if (date('H') < 3) {
+                    //3点开始
                     sleep(90);
-                    db::reconnect();
                     continue;
                 }
+                $row = db::table('action_task')
+                    ->where('task_last_time', strtotime(date('Y/m/d 00:00:00')), '<')
+                    ->where('task_status', 1)->find();
                 if ($row) {
                     db::table('action_task')->where('tid', $row['tid'])->update(['task_status' => 2]);
                     $task = new task($row['tid']);
                     $ret = $task->run();
-                    $log = new \app\common\model\log($row['uid']);
-                    $log->action(json($ret), $ret['code']);
+                    $user_log = new \app\common\model\log($row['uid']);
+                    $user_log->action(json($ret), $ret['code']);
                     db::table('action_task')->where('tid', $row['tid'])
                         ->update(['task_last_time' => time(), 'task_status' => 1]);
                     continue;
                 }
-                sleep(10);
             } catch (\Exception $e) {
-                $log = new \app\common\model\log($row['uid']);
-                $log->system(json(['file' => $e->getFile(), 'line' => $e->getLine(), 'error' => $e->getMessage()]), 6);
+                db::reconnect();//数据库重连
+                $log->error(json(['msg' => '监控错误', 'file' => $e->getFile(), 'line' => $e->getLine(), 'error' => $e->getMessage()]));
             }
+            sleep(10);
         }
         $log->notice('监控停止');
         config('monitor_status', 0);

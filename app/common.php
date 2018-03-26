@@ -106,8 +106,8 @@ function getRandString($length, $type = 2) {
  * @param string $value
  * @return int
  */
-function config($key, $value = '') {
-    if (!empty($value)) {
+function config($key, $value = null) {
+    if (!is_null($value)) {
         if (config($key) !== false) {
             return \icf\lib\db::table('config')->where(['key' => $key])->update(['value' => $value]);
         } else {
