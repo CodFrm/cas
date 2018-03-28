@@ -7,11 +7,7 @@
 </head>
 <body>
 <h2>页面就先随便弄一下,emmm</h2>
-<ul>
-    <li>贴吧签到</li>
-    <li>bilibili签到</li>
-    <li>........</li>
-</ul>
+    <a href="https://github.com/CodFrm/cas">开源地址 欢迎给star</a>
 <h3>登录:</h3>
 <form onsubmit="return push(this);">
     账号: <input type="text" name="u">
@@ -20,6 +16,31 @@
     <br><br>
     <input type="submit" value="登录">
 </form>
+<br><br>
+<h2><a id="user-content-支持平台" class="anchor" aria-hidden="true" href="#支持平台"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>支持平台</h2>
+<ul class="contains-task-list">
+    <li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""> 百度贴吧</li>
+    <li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""> b站直播</li>
+    <li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""> 网易云</li>
+    <li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""> V2EX</li>
+    <li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox"> 联通客户端</li>
+</ul>
+<p>主要是利用php来设置一个定时任务,实现每日签到</p>
+<p>然后就是签到的封包了</p>
+<p>不过php是单线程的,效率挺低,后面可以改成多进程的模式提高效率</p>
+<p>监控文件:app\admin\ctrl\monitor.php</p>
+<p>现在只能通过浏览器访问来开启监控....</p>
+<p><a href="http://url/index.php?c=monitor&amp;a=start&amp;m=admin" rel="nofollow">http://url/index.php?c=monitor&amp;a=start&amp;m=admin</a></p>
+<p>总之现在是一个很不完善的玩意=_=</p>
+<h2><a id="user-content-todo" class="anchor" aria-hidden="true" href="#todo"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>TODO</h2>
+<ul class="contains-task-list">
+    <li class="task-list-item"><input type="checkbox" checked disabled="" class="task-list-item-checkbox"> 优化操作流程</li>
+    <li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox"> 多进程</li>
+    <li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox"> 更多的平台(大家可以来推荐哦)</li>
+    <li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox"> 注册(先自己玩着)</li>
+    <li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox"> 漂亮的页面(至少能看吧)</li>
+</ul>
+
 </body>
 <script>
     function push(form) {

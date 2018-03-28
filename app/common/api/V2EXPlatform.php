@@ -43,7 +43,7 @@ class V2EXPlatform extends BasePlatform {
                 $this->httpRequest->setCookie($this->cookie);
                 $this->httpRequest->setRedirection(4);
                 $this->data = $this->httpRequest->get('https://www.v2ex.com/mission/daily');
-                if (strpos($this->data, '你要查看的页面需要先登录') >= 0) {
+                if (strpos($this->data, '你要查看的页面需要先登录') !== false) {
                     return false;
                 }
                 break;
@@ -53,7 +53,7 @@ class V2EXPlatform extends BasePlatform {
 
     public function VerifyActionResult($actionRet) {
         // TODO: Implement VerifyActionResult() method.
-        return 0;
+        return $actionRet;
     }
 
     public function SignV2EX($actMsg) {

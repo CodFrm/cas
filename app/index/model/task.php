@@ -63,10 +63,9 @@ class task extends model {
             $ret = call_user_func([
                 $platApi, $this->getTaskActionApi()
             ], $row);
-            $result = call_user_func([
-                $platApi, 'VerifyActionResult'
-            ], $ret);
-            return ['code' => $result, 'aid' => $this->data['aid'], 'msg' => ['成功', '签过到了|错误', '账号失效'][$result], 'ret' => $ret];
+            $result = $platApi->VerifyActionResult($ret);
+            $status = ['成功', '签过到了|错误', '账号失效'];
+            return ['code' => $result, 'aid' => $this->data['aid'], 'msg' => $status[$result], 'ret' => $ret];
         } else {
             return ['code' => 2, 'aid' => $this->data['aid'], 'msg' => '账号失效'];
         }
