@@ -50,13 +50,19 @@ class BaiduPlatform extends BasePlatform {
 
     public function VerifyActionResult($actionRet) {
         // TODO: Implement VerifyActionResult() method.
-
+        if (isset($actionRet['ret']['error_msg'][0]['error_code'])) {
+            if ($actionRet['ret']['error_msg'][0]['error_code'] == 1) {
+                return 2;
+            }
+            return 0;
+        }
+        return 1;
     }
 
     private $BDUSS;
 
     public function SignTieba($actMsg) {
-        if ($this->BDUSS = getStrMid($actMsg['pu_cookie'], 'BDUSS=', ';')) {
+        if (!($this->BDUSS = getStrMid($actMsg['pu_cookie'], 'BDUSS=', ';'))) {
             $this->BDUSS = substr($actMsg['pu_cookie'], strpos($actMsg['pu_cookie'], 'BDUSS=') + 6);
         }
         $msgJson = [];
@@ -96,8 +102,8 @@ class BaiduPlatform extends BasePlatform {
             '&stoken=b399b18b5d887995e96efafadfe4b87186e9fc7b6006bd98333f2201783dae15&tbs=' . $tbs . '&timestamp=' . $time . '&z_id=609C16C532BDDA19187A48FC6F100F36A5';
         $data = $this->httpRequest->post('http://c.tieba.baidu.com/c/c/forum/sign', $data);
         $tmpJson = json_decode($data, true);
-        if (isset($tmpJson['error_code'])) {
-            $tmpJson['param'] = ['sign' => $sign, 'data' => $data];
+        if (isset($tmpJson['error_code']) && $tmpJson['error_code'] != 0) {
+            $tmpJson['sign'] = $sign;
             return $tmpJson;
         } else {
             return true;

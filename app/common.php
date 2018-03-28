@@ -79,6 +79,9 @@ function getStrMid($str, $left, $right) {
         return false;
     }
     $rpos = strpos($str, $right, $lpos + strlen($left));
+    if ($rpos === false) {
+        return false;
+    }
     return substr($str, $lpos + strlen($left), $rpos - $lpos - strlen($left));
 }
 

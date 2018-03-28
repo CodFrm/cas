@@ -36,19 +36,22 @@ class BilibiliPlatform extends BasePlatform {
 
     public function VerifyActionResult($actionRet) {
         // TODO: Implement VerifyActionResult() method.
-        if ($actionRet['code'] == -401) {
-            return 2;
-        } else if ($actionRet['code'] != 0) {
-            return 1;
+        if (isset($actionRet['code'])) {
+            if ($actionRet['code'] == -401) {
+                return 2;
+            } else if ($actionRet['code'] != 0) {
+                return 1;
+            }
+            return 0;
         }
-        return 0;
+        return 1;
     }
 
     public function SignLive($actMsg) {
         $cookie = $actMsg['pu_cookie'];
         $this->httpRequest->setCookie($cookie);
         $msgJson = $this->httpRequest->get('https://api.live.bilibili.com/sign/doSign');
-        return $msgJson;
+        return json_decode($msgJson, true);
     }
 
 }

@@ -39,7 +39,16 @@ class WangyiPlatform extends BasePlatform {
 
     public function VerifyActionResult($actionRet) {
         // TODO: Implement VerifyActionResult() method.
-
+        if (isset($actionRet['code'])) {
+            if ($actionRet['code'] != 200) {
+                if ($actionRet['code'] == 301) {
+                    return 2;
+                }
+                return 1;
+            }
+            return 0;
+        }
+        return 1;
     }
 
     public function SignMusic($actMsg) {
@@ -65,7 +74,7 @@ class WangyiPlatform extends BasePlatform {
         $this->httpRequest->setopt(CURLOPT_HEADER, 0);
         $post = 'params=' . urlencode($encText) . '&encSecKey=596a4853ee7618edb0192bc26b8ff9c88992b4e455c16585be0c41125f56f8dd7eeb9394e0bffc412801bf3ef2d86d52c50e5f19d3aab8e3cca724f9a2b0ac98718b961021e0d488fc1d63772a975841593f4094aa187989eae7f59fe68d3b7077393150b2f529f305fb89068f9ea35d2eacab9188ac8891e911e5513c098b3e';
         $msgJson = $this->httpRequest->post('http://music.163.com/weapi/point/dailyTask?csrf_token=' . $csrf_token, $post);
-        return $msgJson;
+        return json_decode($msgJson, true);
     }
 
 }
