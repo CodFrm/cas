@@ -68,6 +68,11 @@ class monitor {
                     $ret = $task->run();
                     $user_log = new \app\common\model\log($row['uid']);
                     $user_log->action(json($ret), $ret['code']);
+                    if ($ret['code'] == 2) {
+                        //2为账号失效,将cookie关联的操作停止
+                        db::table('action_task')->where('puid', $row['puid'])
+                            ->update(['task_status' => 2]);
+                    }
                     db::table('action_task')->where('tid', $row['tid'])
                         ->update(['task_last_time' => time(), 'task_status' => 1]);
                     continue;

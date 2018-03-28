@@ -45,8 +45,15 @@ class user extends authCtrl {
             return new Error(-1, '没有找到相应的修改记录');
         }
         if (input('post.cookie')) {
-            $actDb->update(['pu_cookie' => input('post.cookie')]);
-            $ret = new Error(0, '修改成功');
+            $pid = $ret['pid'];
+            $retUser = $this->verify_account($pid);
+            if (is_array($retUser)) {
+                $actDb->update(['pu_status' => 1, 'pu_time' => time(),
+                    'pu_u' => $retUser['u'], 'pu_cookie' => input('post.cookie')]);
+                $ret = new Error(0, '修改成功');
+            } else {
+                $ret = new Error(-1, '错误的账号Cookie');
+            }
         } else {
             $actDb->delete();
             $ret = new Error(1, '删除成功');

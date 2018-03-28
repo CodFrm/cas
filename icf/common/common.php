@@ -12,7 +12,7 @@
  * Json 编码 对于中文处理 仅支持php5.4以后的版本
  *
  * @author Farmer
- * @param array $arr
+ * @param mixed $arr
  * @return string
  */
 function json($arr) {

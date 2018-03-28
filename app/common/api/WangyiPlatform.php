@@ -37,6 +37,11 @@ class WangyiPlatform extends BasePlatform {
         return true;
     }
 
+    public function VerifyActionResult($actionRet) {
+        // TODO: Implement VerifyActionResult() method.
+
+    }
+
     public function SignMusic($actMsg) {
         $cookie = $actMsg['pu_cookie'];
         $this->httpRequest->setCookie($cookie);

@@ -2,10 +2,12 @@
 /**
  *============================
  * author:Farmer
- * time:2018/2/24
+ * time:2018/3/28
+ * blog:blog.icodef.com
  * function:
  *============================
  */
+
 
 namespace app\common\api;
 
@@ -13,8 +15,7 @@ namespace app\common\api;
 use app\common\BasePlatform;
 use icf\lib\other\http;
 
-class BilibiliPlatform extends BasePlatform {
-
+class V2EXPlatform extends BasePlatform {
     public function __construct($param) {
         parent::__construct($param);
         $this->httpRequest = new http();
@@ -24,31 +25,20 @@ class BilibiliPlatform extends BasePlatform {
     public function VerifyAccount() {
         // TODO: Implement VerifyAccount() method.
         $this->httpRequest->setCookie($this->cookie);
-        $data = $this->httpRequest->get('https://api.bilibili.com/x/web-interface/nav');
-        return getStrMid($data, 'uname":"', '",');
+        $data = $this->httpRequest->get('https://www.v2ex.com/');
+        $matches = [];
+        preg_match('/<a href="\/member\/(.*?)" class="top">(.*?)<\/a>/',$data, $matches);
+        if(isset($matches[2])){
+            return $matches[2];
+        }
+        return false;
     }
 
     public function VerifyAction($action) {
         // TODO: Implement VerifyAction() method.
-
-        return true;
     }
 
     public function VerifyActionResult($actionRet) {
         // TODO: Implement VerifyActionResult() method.
-        if ($actionRet['code'] == -401) {
-            return 2;
-        } else if ($actionRet['code'] != 0) {
-            return 1;
-        }
-        return 0;
     }
-
-    public function SignLive($actMsg) {
-        $cookie = $actMsg['pu_cookie'];
-        $this->httpRequest->setCookie($cookie);
-        $msgJson = $this->httpRequest->get('https://api.live.bilibili.com/sign/doSign');
-        return $msgJson;
-    }
-
 }

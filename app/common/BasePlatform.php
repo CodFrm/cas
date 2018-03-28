@@ -28,5 +28,17 @@ abstract class BasePlatform {
 
     abstract public function VerifyAccount();
 
+    /**
+     * 验证操作
+     * @param $action
+     * @return mixed
+     */
     abstract public function VerifyAction($action);
+
+    /**
+     * 验证操作结果
+     * @param $actionRet
+     * @return mixed
+     */
+    abstract public function VerifyActionResult($actionRet);
 }

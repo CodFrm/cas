@@ -48,6 +48,11 @@ class BaiduPlatform extends BasePlatform {
         return false;
     }
 
+    public function VerifyActionResult($actionRet) {
+        // TODO: Implement VerifyActionResult() method.
+
+    }
+
     private $BDUSS;
 
     public function SignTieba($actMsg) {
@@ -55,7 +60,6 @@ class BaiduPlatform extends BasePlatform {
             $this->BDUSS = substr($actMsg['pu_cookie'], strpos($actMsg['pu_cookie'], 'BDUSS=') + 6);
         }
         $msgJson = [];
-        $error_list = '';
         foreach ($actMsg['param'] as $value) {
             $ret = $this->sign_tieba($value[0], $value[1]);
             if ($ret !== true) {
