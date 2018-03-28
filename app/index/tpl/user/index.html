@@ -21,7 +21,6 @@
     <input type="submit" value="提交">
 </form>
 <h3>添加操作</h3>
-<br>
 <form action="{:url('action')}" onsubmit="return push(this)">
     平台:
     <select name="pid" id="sa" onchange="return showAction(this);">
@@ -37,7 +36,7 @@
     <br><br>
     <input type="submit" value="提交">
 </form>
-<br><br>
+<br>
 <h3>账号列表</h3>
 {foreach $account as $item}
 <div>
@@ -47,9 +46,8 @@
 </div>
 {/foreach}
 如果Cookie是空的则为删除
-<br><br>
-<h3>任务列表</h3>
 <br>
+<h3>任务列表</h3>
 {foreach $task as $item}
 <div>
     {$item['action_name']}
