@@ -63,7 +63,7 @@ class monitor {
                     ->where('task_last_time', strtotime(date('Y/m/d 00:00:00')), '<')
                     ->where('task_status', 1)->find();
                 if ($row) {
-                    db::table('action_task')->where('tid', $row['tid'])->update(['task_status' => 2]);
+                    db::table('action_task')->where('tid', $row['tid'])->update(['task_status' => 4]);
                     $task = new task($row['tid']);
                     $ret = $task->run();
                     $user_log = new \app\common\model\log($row['uid']);
@@ -72,9 +72,10 @@ class monitor {
                         //2为账号失效,将cookie关联的操作停止
                         db::table('action_task')->where('puid', $row['puid'])
                             ->update(['task_status' => 2]);
+                    } else {
+                        db::table('action_task')->where('tid', $row['tid'])
+                            ->update(['task_last_time' => time(), 'task_status' => 1]);
                     }
-                    db::table('action_task')->where('tid', $row['tid'])
-                        ->update(['task_last_time' => time(), 'task_status' => 1]);
                     continue;
                 }
             } catch (\Exception $e) {
