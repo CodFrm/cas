@@ -48,6 +48,7 @@ class monitor {
     private function monitor() {
         $log = new log();
         $log->notice('监控开启');
+        db::table('action_task')->where('task_status', 4)->update(['task_status', 1]);
         while (1) {
             try {
                 if (config('monitor_status') != 1) {
@@ -63,7 +64,7 @@ class monitor {
                     ->where('task_last_time', strtotime(date('Y/m/d 00:00:00')), '<')
                     ->where('task_status', 1)->find();
                 if ($row) {
-                    db::table('action_task')->where('tid', $row['tid'])->update(['task_status' => 2]);
+                    db::table('action_task')->where('tid', $row['tid'])->update(['task_status' => 4]);
                     $task = new task($row['tid']);
                     $ret = $task->run();
                     $user_log = new \app\common\model\log($row['uid']);

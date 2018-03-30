@@ -41,4 +41,10 @@ abstract class BasePlatform {
      * @return mixed
      */
     abstract public function VerifyActionResult($actionRet);
+
+    /**
+     * 是否可以登录
+     * @return mixed
+     */
+    abstract public function IsLogin();
 }

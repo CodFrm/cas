@@ -81,6 +81,16 @@ class user extends authCtrl {
         return db::table('action')->where('pid', $pid)->select()->fetchAll();
     }
 
+    public function plogin($pid) {
+        $plat = new platform($pid);
+        if ($plat->getData()) {
+            $platApi = 'app\\common\\api\\' . $plat->_api;
+            $platApi = new $platApi('') ?: new BaiduPlatform('');
+            return new Error(0, 'success', ['is_login' => $platApi->IsLogin()]);
+        }
+        return new Error(-1, '不存在的平台');
+    }
+
     public function postAction() {
         $pid = _post('pid');
         $aid = _post('aid');

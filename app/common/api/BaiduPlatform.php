@@ -55,8 +55,15 @@ class BaiduPlatform extends BasePlatform {
                 return 2;
             }
             return 0;
+        } else if ($actionRet == []) {
+            return 0;
         }
         return 1;
+    }
+
+    public function IsLogin() {
+        // TODO: Implement IsLogin() method.
+        return true;
     }
 
     private $BDUSS;

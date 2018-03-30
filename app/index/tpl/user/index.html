@@ -10,7 +10,7 @@
 <br>
 <form action="{:url('account')}" onsubmit="return push(this)">
     平台:
-    <select id="pid" name="pid">
+    <select id="pid" name="pid" onchange="return loginBox(this);">
         {foreach $platform as $val}
         <option value="{$val['pid']}">{$val['platform_name']}</option>
         {/foreach}
@@ -59,7 +59,36 @@
 <script>
     $(function () {
         showAction(document.getElementById('sa'));
+        loginBox(document.getElementById('pid'));
     });
+
+    function loginBox(sel) {
+        $.ajax({
+            url: "{:url('plogin')}",
+            data: {pid: $(sel).val()},
+            success: function (obj) {
+                $('#login').remove();
+                if (obj.is_login) {
+                    //创建登录框
+                    var loginForm = '<div id="login" ' +
+                        'style="padding:10px;border:1px solid #ccc;display: inline-block;margin: 10px 0;">' +
+                        '账号:<input type="text">' +
+                        '<br><br>密码:<input type="text"><br>' +
+                        '<br>这里登录自动获取cookie<br>' +
+                        '服务器不会保留任何账户密码的数据' +
+                        '<br><button onclick="return login();" style="float: right;">登录</button>' +
+                        '</div>';
+                    $('#cookie').next().after(loginForm);
+                    console.log('创建');
+                }
+            }
+        });
+    }
+
+    function login() {
+
+        return false;
+    }
 
     function run(btn) {
         $.ajax({
@@ -90,7 +119,6 @@
     }
 
     function showAction(sel) {
-        console.log(123);
         $.ajax({
             url: "{:url('action')}",
             data: {pid: $(sel).val()},
