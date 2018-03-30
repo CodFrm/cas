@@ -50,7 +50,7 @@
 <h3>任务列表</h3>
 {foreach $task as $item}
 <div>
-    {$item['action_name']}
+    {$item['action_name']}<span style="color: red">{if $item['task_status']==2}  操作失效了,可能是你的cookie失效的原因,请更新cookie{/if}</span>
     <br>
     <button onclick="return run(this);" value="{$item['tid']}">手动执行一次</button>
 </div>

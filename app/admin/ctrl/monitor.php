@@ -73,9 +73,10 @@ class monitor {
                         //2为账号失效,将cookie关联的操作停止
                         db::table('action_task')->where('puid', $row['puid'])
                             ->update(['task_status' => 2]);
+                    } else {
+                        db::table('action_task')->where('tid', $row['tid'])
+                            ->update(['task_last_time' => time(), 'task_status' => 1]);
                     }
-                    db::table('action_task')->where('tid', $row['tid'])
-                        ->update(['task_last_time' => time(), 'task_status' => 1]);
                     continue;
                 }
             } catch (\Exception $e) {
