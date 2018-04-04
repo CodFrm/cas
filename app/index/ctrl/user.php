@@ -14,6 +14,7 @@ use app\common\api\BaiduPlatform;
 use app\common\ctrl\authCtrl;
 use app\common\Error;
 use app\common\model\platform;
+use app\common\PlatformLogin;
 use app\index\model\task;
 use icf\lib\db;
 
@@ -86,7 +87,10 @@ class user extends authCtrl {
         if ($plat->getData()) {
             $platApi = 'app\\common\\api\\' . $plat->_api;
             $platApi = new $platApi('') ?: new BaiduPlatform('');
-            return new Error(0, 'success', ['is_login' => $platApi->IsLogin()]);
+            if($platApi instanceof PlatformLogin){
+                return new Error(0, 'success', ['is_login' => 1]);
+            }
+            return new Error(-1, '没有账号登录的接口');
         }
         return new Error(-1, '不存在的平台');
     }

@@ -3,7 +3,7 @@
  *============================
  * author:Farmer
  * time:2018/2/24
- * function:
+ * function:平台基础类
  *============================
  */
 
@@ -26,6 +26,10 @@ abstract class BasePlatform {
         }
     }
 
+    /**
+     * 验证账号
+     * @return mixed
+     */
     abstract public function VerifyAccount();
 
     /**
@@ -41,10 +45,4 @@ abstract class BasePlatform {
      * @return mixed
      */
     abstract public function VerifyActionResult($actionRet);
-
-    /**
-     * 是否可以登录
-     * @return mixed
-     */
-    abstract public function IsLogin();
 }

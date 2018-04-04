@@ -4,13 +4,13 @@ Navicat MySQL Data Transfer
 Source Server         : localhost_3306
 Source Server Version : 50505
 Source Host           : localhost:3306
-Source Database       : cas
+Source Database       : tmp
 
 Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2018-03-26 10:58:01
+Date: 2018-04-04 12:52:52
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -26,13 +26,15 @@ CREATE TABLE `cas_action` (
   `action_description` text NOT NULL,
   `action_api` varchar(45) NOT NULL,
   PRIMARY KEY (`aid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of cas_action
 -- ----------------------------
 INSERT INTO `cas_action` VALUES ('1', '1', '贴吧签到', '每日自动签到关注的贴吧(每日只执行一次,新添加的贴吧第二天开始)', 'SignTieba');
 INSERT INTO `cas_action` VALUES ('2', '2', 'bilibili直播签到', '每天自动签到', 'SignLive');
+INSERT INTO `cas_action` VALUES ('3', '3', '网易云音乐签到', '每日自动签到网易云音乐', 'SignMusic');
+INSERT INTO `cas_action` VALUES ('4', '4', 'V2EX每日任务', 'V2EX每日任务', 'SignV2EX');
 
 -- ----------------------------
 -- Table structure for cas_action_task
@@ -67,6 +69,7 @@ CREATE TABLE `cas_config` (
 -- Records of cas_config
 -- ----------------------------
 INSERT INTO `cas_config` VALUES ('monitor_status', '1');
+INSERT INTO `cas_config` VALUES ('pwd_encode_salt', '#faxGht&cd');
 
 -- ----------------------------
 -- Table structure for cas_log
@@ -95,13 +98,15 @@ CREATE TABLE `cas_platform` (
   `platform_description` text NOT NULL,
   `platform_api` varchar(45) NOT NULL,
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of cas_platform
 -- ----------------------------
 INSERT INTO `cas_platform` VALUES ('1', '百度', '百度账号', 'BaiduPlatform');
 INSERT INTO `cas_platform` VALUES ('2', 'bilibili', 'bilibili账号', 'BilibiliPlatform');
+INSERT INTO `cas_platform` VALUES ('3', '网易云', '网易云账号操作', 'WangyiPlatform');
+INSERT INTO `cas_platform` VALUES ('4', 'V2EX', '一个汇集各类奇妙好玩的话题和流行动向的网站', 'V2EXPlatform');
 
 -- ----------------------------
 -- Table structure for cas_platform_account

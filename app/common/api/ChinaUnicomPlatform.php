@@ -13,8 +13,9 @@ namespace app\common\api;
 
 
 use app\common\BasePlatform;
+use app\common\PlatformLogin;
 
-class ChinaUnicomPlatform extends BasePlatform {
+class ChinaUnicomPlatform extends BasePlatform implements PlatformLogin {
     public function VerifyAccount() {
         // TODO: Implement VerifyAccount() method.
     }
@@ -24,7 +25,8 @@ class ChinaUnicomPlatform extends BasePlatform {
     public function VerifyActionResult($actionRet) {
         // TODO: Implement VerifyActionResult() method.
     }
-    public function IsLogin() {
-        // TODO: Implement IsLogin() method.
+    public function Login($u, $p) {
+        // TODO: Implement Login() method.
+        return false;
     }
 }

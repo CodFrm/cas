@@ -20,8 +20,7 @@ class index {
         view()->display();
     }
 
-    protected
-    function errorCode($code, $error = '') {
+    protected function errorCode($code, $error = '') {
         //方便前端通过错误代码提示错误
         $errorCode = [
             '登录成功' => 0,
@@ -42,8 +41,7 @@ class index {
         return ['code' => $code, 'msg' => $error];
     }
 
-    public
-    function login() {
+    public function login() {
         $ret = verify($_POST, [
             'u' => ['msg' => '用户名不能为空', 'sql' => 'username'],
             'p' => ['regex' => ['/^[\\~!@#$%^&*()-_=+|{}\[\], .?\/:;\'\"\d\w]{6,16}$/', '密码不符合规范'], 'msg' => '请输入密码', 'sql' => 'password']
@@ -64,13 +62,11 @@ class index {
         return self::errorCode($ret);
     }
 
-    public
-    function register() {
+    public function register() {
         view()->display();
     }
 
-    public
-    function postRegister() {
+    public function postRegister() {
         $ret = verify($_POST, [
             'u' => ['msg' => '用户名不能为空', 'sql' => 'username'],
             'p' => ['regex' => ['/^[\\~!@#$%^&*()-_=+|{}\[\], .?\/:;\'\"\d\w]{6,16}$/', '密码不符合规范'], 'msg' => '请输入密码', 'sql' => 'password']
