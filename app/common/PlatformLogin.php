@@ -13,5 +13,5 @@ namespace app\common;
 
 
 interface PlatformLogin {
-    public function Login($u,$p);
+    public function Login($u,$p,&$cookie);
 }

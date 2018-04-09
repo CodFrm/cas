@@ -132,3 +132,16 @@ function config($key, $value = null) {
 function getUrlRoot() {
     return substr($_SERVER['SCRIPT_NAME'], 0, strrpos($_SERVER['SCRIPT_NAME'], '/'));
 }
+
+/**
+ * 填充0
+ * @param $str
+ * @param $len
+ * @return string
+ */
+function fillZero($str, $len) {
+    for ($i = strlen($str); $i < $len; $i++) {
+        $str = '0' . $str;
+    }
+    return $str;
+}

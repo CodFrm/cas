@@ -47,11 +47,6 @@ class BilibiliPlatform extends BasePlatform {
         return 1;
     }
 
-    public function IsLogin() {
-        // TODO: Implement IsLogin() method.
-        return false;
-    }
-
     public function SignLive($actMsg) {
         $cookie = $actMsg['pu_cookie'];
         $this->httpRequest->setCookie($cookie);

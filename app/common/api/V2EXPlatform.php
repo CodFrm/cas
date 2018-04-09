@@ -56,11 +56,6 @@ class V2EXPlatform extends BasePlatform {
         return $actionRet;
     }
 
-    public function IsLogin() {
-        // TODO: Implement IsLogin() method.
-        return false;
-    }
-
     public function SignV2EX($actMsg) {
         if ($signUrl = getStrMid($this->data, 'value="领取 X 铜币" onclick="location.href = \'', '\';"')) {
             $signUrl = 'https://www.v2ex.com' . $signUrl;

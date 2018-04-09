@@ -61,11 +61,6 @@ class BaiduPlatform extends BasePlatform {
         return 1;
     }
 
-    public function IsLogin() {
-        // TODO: Implement IsLogin() method.
-        return false;
-    }
-
     private $BDUSS;
 
     public function SignTieba($actMsg) {
