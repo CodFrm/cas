@@ -51,6 +51,8 @@ class user extends authCtrl {
             if (is_array($retUser)) {
                 $actDb->update(['pu_status' => 1, 'pu_time' => time(),
                     'pu_u' => $retUser['u'], 'pu_cookie' => input('post.cookie')]);
+                db::table('action_task')
+                    ->where('puid', input('post.puid'))->update(['task_status' => 1]);
                 $ret = new Error(0, '修改成功');
             } else {
                 $ret = new Error(-1, '错误的账号Cookie');

@@ -58,6 +58,9 @@ class BaiduPlatform extends BasePlatform {
         } else if ($actionRet == []) {
             return 0;
         }
+        if ($actionRet == []) {
+            return 0;
+        }
         return 1;
     }
 

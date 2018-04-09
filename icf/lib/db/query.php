@@ -30,12 +30,17 @@ class query {
     }
 
     public function reconnect() {
-        static::$db = null;
-        self::$db_type = input('config.db.type');
-        $dns = call_user_func('icf\\lib\\db\\' . self::$db_type . '::dns');
-        self::$db = new PDO($dns, input('config.db.user'), input('config.db.pwd'));
-        self::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        self::$db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+        try {
+            static::$db = null;
+            self::$db_type = input('config.db.type');
+            $dns = call_user_func('icf\\lib\\db\\' . self::$db_type . '::dns');
+            self::$db = new PDO($dns, input('config.db.user'), input('config.db.pwd'));
+            self::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            self::$db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+        }catch (\Exception $e){
+            return false;
+        }
+        return true;
     }
 
     private $table = '';
