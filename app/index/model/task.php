@@ -52,7 +52,7 @@ class task extends model {
 
     public function run() {
         $platApi = 'app\\common\\api\\' . $this->getTaskPlatformApi();
-        $platApi = new $platApi($this->getCookie()) ?: new BaiduPlatform(_post('cookie'));
+        $platApi = new $platApi(['puid' => $this->data['puid']]) ?: new BaiduPlatform(['puid' => $this->data['puid']]);
         $param = $platApi->VerifyAction($this->getTaskActionApi());
         if ($param) {
             $row = $this->data;

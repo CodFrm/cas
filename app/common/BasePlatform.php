@@ -15,14 +15,15 @@ use icf\lib\db;
 abstract class BasePlatform {
     protected $cookie = '';
     protected $platApi = 'BasePlatform';
+    protected $platAccount=[];
     protected $httpRequest;
 
     public function __construct($param) {
         if (is_string($param)) {
             $this->cookie = $param;
         } else {
-            $data = db::table('platform_account')->where($param)->find();
-            $this->cookie = $data['pu_cookie'];
+            $this->platAccount = db::table('platform_account')->where($param)->find();
+            $this->cookie = $this->platAccount['pu_cookie'];
         }
     }
 

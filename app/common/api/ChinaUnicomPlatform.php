@@ -21,21 +21,58 @@ class ChinaUnicomPlatform extends BasePlatform implements PlatformLogin {
 
     public function __construct($param) {
         parent::__construct($param);
-        parent::__construct($param);
         $this->httpRequest = new http();
         $this->httpRequest->https();
+        $this->httpRequest->setCookie($this->cookie);
     }
 
     public function VerifyAccount() {
         // TODO: Implement VerifyAccount() method.
+        $u = getStrMid($this->cookie, 'u_account=', ';');
+        $data = 'showType=3&version=android%405.62&desmobile=' . urlencode($u);
+        $data = $this->httpRequest->post('https://m.client.10010.com/mobileService/home/queryUserInfoFive.htm', $data);
+        $data = json_decode($data, true);
+        if (isset($data['data'])) {
+            return $u;
+        }
+        return false;
     }
+
+    private $resCookie;
 
     public function VerifyAction($action) {
         // TODO: Implement VerifyAction() method.
+        switch ($action) {
+            case 'SignLT':
+                $this->httpRequest->responseHeader();
+                $this->httpRequest->setRedirection(0);
+                $this->httpRequest->get('http://m.client.10010.com/mobileService//thirdRedirect.htm?redirect_uri=https://act.10010.com/SigninApp/signin/querySigninActivity.htm&version=android@5.62&desmobile=' . $this->platAccount['pu_u']);
+                $location = getStrMid($this->httpRequest->getResponseHeader(), 'Location: ', "\r\n");
+                if ($location == '') {
+                    return false;
+                }
+                $this->httpRequest->get($location);
+                $this->resCookie = $this->httpRequest->getCookie();
+                return true;
+        }
+        return false;
     }
 
     public function VerifyActionResult($actionRet) {
         // TODO: Implement VerifyActionResult() method.
+        if (isset($actionRet['msgCode'])) {
+            if ($actionRet['msgCode'] == '0008') {
+                return 1;
+            }
+            return 0;
+        }
+        return 2;
+    }
+
+    public function SignLT($actMsg) {
+        $this->httpRequest->setCookie("123");
+        $data = $this->httpRequest->post("https://act.10010.com/SigninApp/signin/daySign.do", "className=btnPouplePost");
+        return json_decode($data, true);
     }
 
     public function Login($u, $p, &$cookie) {
