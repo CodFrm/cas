@@ -70,7 +70,7 @@ class ChinaUnicomPlatform extends BasePlatform implements PlatformLogin {
     }
 
     public function SignLT($actMsg) {
-        $this->httpRequest->setCookie("123");
+        $this->httpRequest->setCookie($this->resCookie);
         $data = $this->httpRequest->post("https://act.10010.com/SigninApp/signin/daySign.do", "className=btnPouplePost");
         return json_decode($data, true);
     }
