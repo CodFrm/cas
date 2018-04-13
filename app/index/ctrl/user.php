@@ -89,8 +89,25 @@ class user extends authCtrl {
         if ($plat->getData()) {
             $platApi = 'app\\common\\api\\' . $plat->_api;
             $platApi = new $platApi('') ?: new BaiduPlatform('');
-            if($platApi instanceof PlatformLogin){
+            if ($platApi instanceof PlatformLogin) {
                 return new Error(0, 'success', ['is_login' => 1]);
+            }
+            return new Error(-1, '没有账号登录的接口');
+        }
+        return new Error(-1, '不存在的平台');
+    }
+
+    public function postPlogin() {
+        $plat = new platform(input('post.pid'));
+        if ($plat->getData()) {
+            $platApi = 'app\\common\\api\\' . $plat->_api;
+            $platApi = new $platApi('') ?: new BaiduPlatform('');
+            if ($platApi instanceof PlatformLogin) {
+                $ret = $platApi->Login(input('post.u'), input('post.p'), $cookie);
+                if ($ret === true) {
+                    return new Error(0, '登录成功', ['cookie' => $cookie]);
+                }
+                return new Error(-2, '登录失败', ['status' => $ret]);
             }
             return new Error(-1, '没有账号登录的接口');
         }

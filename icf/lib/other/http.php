@@ -17,6 +17,8 @@ namespace icf\lib\other;
  */
 class http {
     private $curl;
+    private $data;
+    private $responseHeader = false;
 
     public function __construct($url = '') {
         $this->curl = curl_init($url);
@@ -29,8 +31,35 @@ class http {
         curl_setopt($this->curl, $key, $value);
     }
 
-    public function getHeader(){
-    return curl_getinfo($this->curl);
+    public function responseHeader() {
+        $this->setopt(CURLOPT_HEADER, $this->responseHeader = (!$this->responseHeader));
+    }
+
+    public function getResponseHeader() {
+        if ($this->responseHeader) {
+            return substr($this->data, 0, strpos($this->data, "\r\n\r\n"));
+        }
+        return false;
+    }
+
+    public function data() {
+        if ($this->responseHeader) {
+            return substr($this->data, strpos($this->data, "\r\n\r\n") + 4);
+        }
+        return $this->data;
+    }
+
+    public function getCookie() {
+        $cookie = '';
+        preg_match_all('/Set-Cookie:(.*);/iU', $this->getResponseHeader(), $matchCookie);
+        foreach ($matchCookie[1] as $value) {
+            $cookie .= $value . ';';
+        }
+        return $cookie;
+    }
+
+    public function getHeader($opt = 0) {
+        return curl_getinfo($this->curl, $opt);
     }
 
     public function setRedirection($value = 1) {
@@ -80,6 +109,6 @@ class http {
     public function access() {
         $response = curl_exec($this->curl);
         if ($response == false) return curl_error($this->curl);
-        return $response;
+        return $this->data = $response;
     }
 }

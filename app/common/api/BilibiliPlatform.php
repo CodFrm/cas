@@ -47,7 +47,6 @@ class BilibiliPlatform extends BasePlatform {
         return 1;
     }
 
-
     public function SignLive($actMsg) {
         $cookie = $actMsg['pu_cookie'];
         $this->httpRequest->setCookie($cookie);

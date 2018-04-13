@@ -72,8 +72,8 @@
                     //创建登录框
                     var loginForm = '<div id="login" ' +
                         'style="padding:10px;border:1px solid #ccc;display: inline-block;margin: 10px 0;">' +
-                        '账号:<input type="text">' +
-                        '<br><br>密码:<input type="text"><br>' +
+                        '账号:<input name="user" type="text">' +
+                        '<br><br>密码:<input name="pwd" type="text"><br>' +
                         '<br>这里登录自动获取cookie<br>' +
                         '服务器不会保留任何账户密码的数据' +
                         '<br><button onclick="return login();" style="float: right;">登录</button>' +
@@ -86,7 +86,22 @@
     }
 
     function login() {
-
+        var u= $("#login > [name='user']").val();
+        var p= $("#login > [name='pwd']").val();
+        $.ajax({
+            url:"{:url('plogin')}",
+            type:'post',
+            data:{pid:$('#pid').val(),u:u,p:p},
+            success:function (obj) {
+                console.log(obj)
+                if (obj.code==0){
+                    $('#cookie').val(obj.cookie);
+                }else if(obj.code==-2){
+                    obj.msg+="错误原因:"+obj.status;
+                }
+                alert(obj.msg);
+            }
+        });
         return false;
     }
 
