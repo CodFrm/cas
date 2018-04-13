@@ -48,7 +48,7 @@ class monitor {
     private function monitor() {
         $log = new log();
         $log->notice('监控开启');
-        db::table('action_task')->where('task_status', 4)->update(['task_status', 1]);
+        db::table('action_task')->where('task_status', 4)->update(['task_status' => 1]);
         while (1) {
             try {
                 if (config('monitor_status') != 1) {
