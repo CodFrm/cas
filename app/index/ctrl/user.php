@@ -11,6 +11,7 @@ namespace app\index\ctrl;
 
 
 use app\common\api\BaiduPlatform;
+use app\common\BasePlatform;
 use app\common\ctrl\authCtrl;
 use app\common\Error;
 use app\common\model\platform;
@@ -140,7 +141,8 @@ class user extends authCtrl {
         if ($plat->getData()) {
             if ($actionRow = db::table('action')->where(['aid' => $aid, 'pid' => $pid])->find()) {
                 $platApi = 'app\\common\\api\\' . $plat->_api;
-                $platApi = new $platApi(['uid' => _cookie('uid'), 'pid' => $pid]) ?: new BaiduPlatform(_post('cookie'));
+                /** @var BasePlatform $platApi */
+                $platApi = new $platApi(['uid' => _cookie('uid'), 'pid' => $pid]);
                 if ($platData = $platApi->VerifyAction($actionRow['action_api'])) {
                     return ['param' => $platData];
                 } else {

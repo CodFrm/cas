@@ -12,9 +12,7 @@
 
 监控文件:app\admin\ctrl\monitor.php
 
-现在只能通过浏览器访问来开启监控....
-
-http://url/index.php?c=monitor&a=start&m=admin
+使用cli模式运行
 
 总之现在是一个很不完善的玩意=_=
 
@@ -44,9 +42,17 @@ http://url/index.php?c=monitor&a=start&m=admin
 config为读取数据库cas_config中的pwd_encode_salt字段
 
 ### 启动
-访问这个URL:http://url/index.php?c=monitor&a=start&m=admin
+使用php运行目录下的start.php文件,即可启动监控
 
-会检查数据库中的config('monitor_status'),判断监控是否开启
+```base
+php start.php
+```
+
+在```app/cache/log/year/month/```目录下,可以看到运行日志
+
+在表```cas_log```中可以看到详细的数据
+
+如果启动不成功,请在数据库中修```改cas_config```表的```monitor_status```,值修改为0,重新启动
 
 0为未启动,1为启动
 
@@ -68,6 +74,7 @@ config为读取数据库cas_config中的pwd_encode_salt字段
 
 ## TODO
 - [x] 优化操作流程
+- [x] CLI模式启动
 - [ ] 平台账号登录,更方便的添加账号
 - [ ] 多进程
 - [ ] 更多的平台(大家可以来推荐哦)

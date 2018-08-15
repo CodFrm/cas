@@ -16,7 +16,7 @@ use lib\route;
 require_once 'functions.php';
 require_once 'common/common.php';
 date_default_timezone_set('PRC');
-$home = $_SERVER['REQUEST_URI'];
+$home = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
 if (!empty($_SERVER['QUERY_STRING'])) {
     $home = substr($_SERVER['REQUEST_URI'], 0, strpos($home, '?'));
 }
@@ -28,7 +28,7 @@ if (isset($_SERVER['PATH_INFO']) && !empty($_SERVER['PATH_INFO'])) {
 if (!isset($_SERVER['REQUEST_SCHEME'])) {
     $_SERVER['REQUEST_SCHEME'] = 'http';
 }
-define('__HOME_', '//' . $_SERVER['HTTP_HOST'] . $home);
+define('__HOME_', '//' . (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '') . $home);
 
 class index {
     static $log;

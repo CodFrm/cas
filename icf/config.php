@@ -25,6 +25,6 @@ return [
     'action_key' => 'a',
     'route' => ['get' => ['start' => 'index->sign->start']],
     'tpl_suffix' => 'html',
-    'log' => true,
+    'log' => false,
     'url_style' => 1
 ];

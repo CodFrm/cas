@@ -38,7 +38,7 @@ class BaiduPlatform extends BasePlatform {
                         'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36',
                         'Upgrade-Insecure-Requests: 1']);
                     $data = $this->httpRequest->get('https://tieba.baidu.com/mo/q/m?tn=bdIndex&');
-                    preg_match_all('/<li data-fn="(.*?)"[\s\S]+?<a data-fid="(.*?)"/', $data, $match, PREG_OFFSET_CAPTURE);
+                    preg_match_all('/<li\s{0,}data-fn="(.*?)"[\s\S]+?<a\s{0,}data-fid="(.*?)"/', $data, $match, PREG_OFFSET_CAPTURE);
                     if (sizeof($match) >= 2) {
                         return $match[1];
                     }

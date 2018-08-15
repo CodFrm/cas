@@ -22,8 +22,9 @@ class monitor {
      * @author Farmer
      */
     public function start() {
+        echo '监控启动';
         if (config('monitor_status') == 1) {
-            return 'error';
+            return '记录中是在运行';
         }
         config('monitor_status', 1);
         set_time_limit(0);
@@ -43,6 +44,7 @@ class monitor {
         } else {
             $this->monitor();
         }
+        echo '监控停止';
     }
 
     private function monitor() {
