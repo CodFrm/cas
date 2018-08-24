@@ -46,6 +46,8 @@ config为读取数据库cas_config中的pwd_encode_salt字段
 
 ```base
 php start.php
+//注意后台运行
+nohup php start.php > /dev/null 2>&1 &
 ```
 
 在```app/cache/log/year/month/```目录下,可以看到运行日志
@@ -64,20 +66,17 @@ php start.php
 实现的类要放在app/common/api目录下
 
 ## 支持平台
+> 太久没更新有些失效了...
+
 - [x] 百度贴吧
 - [x] b站直播
-- [x] 网易云
-- [x] V2EX
 - [ ] 联通客户端
-- [ ] 网易云手机客户端
 **......**
 
 ## TODO
+> 先不挖太多坑了
+
 - [x] 优化操作流程
 - [x] CLI模式启动
 - [ ] 平台账号登录,更方便的添加账号
-- [ ] 多进程
-- [ ] 更多的平台(大家可以来推荐哦)
-- [ ] 注册(先自己玩着)
-- [ ] 漂亮的页面(至少能看吧)
 
