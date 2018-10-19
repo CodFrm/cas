@@ -24,8 +24,13 @@ class BaiduPlatform extends BasePlatform {
     public function VerifyAccount() {
         // TODO: Implement VerifyAccount() method.
         $this->httpRequest->setCookie($this->cookie);
-        $data = $this->httpRequest->get('https://tieba.baidu.com/mo/q/m?tn=bdIndex&');
-        return getStrMid($data, 'uname: "', '",');
+        $this->httpRequest->setHeader([
+            'Connection: keep-alive',
+            'User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1',
+            'Upgrade-Insecure-Requests: 1'
+        ]);
+        $data = $this->httpRequest->get('https://tieba.baidu.com/index/tbwise/forum');
+        return getStrMid($data, '?un=', '"');
     }
 
     public function VerifyAction($action) {
@@ -34,15 +39,20 @@ class BaiduPlatform extends BasePlatform {
             case 'SignTieba':
                 {
                     $this->httpRequest->setCookie($this->cookie);
-                    $this->httpRequest->setHeader(['Connection: keep-alive',
+                    $this->httpRequest->setHeader([
+                        'Connection: keep-alive',
                         'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36',
-                        'Upgrade-Insecure-Requests: 1']);
-                    $data = $this->httpRequest->get('https://tieba.baidu.com/mo/q/m?tn=bdIndex&');
-                    preg_match_all('/<li\s{0,}data-fn="(.*?)"[\s\S]+?<a\s{0,}data-fid="(.*?)"/', $data, $match, PREG_OFFSET_CAPTURE);
-                    if (sizeof($match) >= 2) {
-                        return $match[1];
+                        'Upgrade-Insecure-Requests: 1'
+                    ]);
+                    $data = $this->httpRequest->get('https://tieba.baidu.com/');
+                    $data = getStrMid($data, "use('spage/widget/forumDirectory',", ");");
+                    $tieba_arr = json_decode($data, true);
+                    $ret_arr = [];
+                    foreach ($tieba_arr['forums'] as $val) {
+                        $tmp_arr = [$val['forum_name'], $val['forum_id']];
+                        $ret_arr[] = $tmp_arr;
                     }
-                    break;
+                    return $ret_arr;
                 }
         }
         return false;
@@ -81,20 +91,32 @@ class BaiduPlatform extends BasePlatform {
         return $msgJson;
     }
 
-    public function sign_tieba($name, $fid) {
-        $this->httpRequest->setHeader(['Connection: keep-alive',
-            'User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 10_3 like Mac OS X) AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75 Mobile/14E5239e Safari/602.1',
-            'Upgrade-Insecure-Requests: 1']);
-        $data = $this->httpRequest->get('https://tieba.baidu.com/f?kw=' . urlencode($name));
-        $this->httpRequest->setHeader(['Content-Type: application/x-www-form-urlencoded',
-            'Cookie: ka=open',
-            'cuid: baidutiebaappa638e2bf-d021-4fd0-aa34-4d8e9b5cf991',
-            'User-Agent: bdtb for Android 9.3.8.0',
-            'client_logid: 1519637262934',
-            'Connection: Keep-Alive',
-            'client_user_token: 1089940244']);
+    public function getTbs() {
+        $http = new http('http://tieba.baidu.com/dc/common/tbs');
+        $http->setHeader([
+            'User-Agent: bdtb for Android 6.5.8', 'Referer: http://tieba.baidu.com/', 'X-Forwarded-For: 115.28.1.' . mt_rand(1, 255)
+        ]);
+        $http->setCookie("BDUSS=" . $this->BDUSS);
+        $json = json_decode($http->get(), true);
+        return $json['tbs'];
+    }
 
-        $tbs = getStrMid($data, '"tbs":"', '"');
+    public function addTiebaSign(&$data) {
+        $data = array(
+                '_client_id' => '03-00-DA-59-05-00-72-96-06-00-01-00-04-00-4C-43-01-00-34-F4-02-00-BC-25-09-00-4E-36',
+                '_client_type' => '4',
+                '_client_version' => '6.0.1',
+                '_phone_imei' => '540b43b59d21b7a4824e1fd31b08e9a6',
+            ) + $data;
+        $x = '';
+        foreach ($data as $k => $v) {
+            $x .= $k . '=' . $v;
+        }
+        $data['sign'] = strtoupper(md5($x . 'tiebaclient!!!'));
+    }
+
+    public function sign_tieba($name, $fid) {
+        $tbs = $this->getTbs();
         $time = time() . rand(100, 999);
         $sign = 'BDUSS=' . urldecode($this->BDUSS) .
             '_client_id=wappc_1519637358655_406_client_type=2_client_version=9.3.8.0_phone_imei=000000000000000cuid=baidutiebaappa638e2bf-d021-4fd0-aa34-4d8e9b5cf991' .
