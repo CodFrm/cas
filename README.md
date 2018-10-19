@@ -21,23 +21,7 @@
 
 利用phpmyadmin或其他工具将db.sql导入到数据库
 
-打开icf/config.php文件,修改数据库的配置
-
-```php
-<?php
-'db' => [
-        'type' => 'mysql',
-        'server' => 'localhost',
-        'port' => 3306,
-        'db' => 'cas',//数据库名
-        'user' => 'root',//数据库用户
-        'pwd' => '',//数据库用户密码
-        'prefix' => 'cas_'//表前缀
-]
-```
-因为还没有写注册功能,所以需要自己去数据库中添加账号....(~_~)
-
-密码加密规则:hash('sha256', $uid . $pwd . config('pwd_encode_salt'));
+修改更目录下的```.env```文件,修改数据库配置部分
 
 config为读取数据库cas_config中的pwd_encode_salt字段
 
@@ -59,7 +43,7 @@ nohup php start.php > /dev/null 2>&1 &
 0为未启动,1为启动
 
 ## 添加平台
-继承 app\common\BasePlatform 抽象类,实现里面的方法
+继承```app\common\BasePlatform```抽象类,实现里面的方法
 
 在数据库cas_platform表中添加平台的信息,在cas_action中添加操作的信息
 

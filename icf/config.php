@@ -12,12 +12,12 @@ return [
     'debug' => true,
     'db' => [
         'type' => 'mysql',
-        'server' => 'localhost',
-        'port' => 3306,
-        'db' => 'sql127_0_7_1',
-        'user' => 'sql127_0_7_1',
-        'pwd' => 'RyaEzwwESHeXB8BW',
-        'prefix' => 'cas_'
+        'server' => env('DB_SERVER'),
+        'port' => env('DB_PORT'),
+        'db' => env('DB_NAME'),
+        'user' => env('DB_USER'),
+        'pwd' => env('DB_PASSWORD'),
+        'prefix' => env('DB_PREFIX')
     ],
     'rest' => true,
     'module_key' => 'm',

@@ -2,4 +2,6 @@
 /app/cache/tpl/*.php
 *.log
 /icf/res
+config.php
+.env
 
