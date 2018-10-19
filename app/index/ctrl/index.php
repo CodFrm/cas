@@ -24,6 +24,7 @@ class index {
         //方便前端通过错误代码提示错误
         $errorCode = [
             '登录成功' => 0,
+            '注册成功' => 0,
             '用户名已经被注册' => 10001,
             '用户名不能为空' => 10002,
             '用户名格式错误' => 10003,
@@ -31,6 +32,7 @@ class index {
             '密码不符合规范' => 10004,
             '密码错误' => 10005,
             '请输入密码' => 10006,
+            '邮箱格式不正确' => 10007,
             '错误的令牌' => 10020
         ];
         if (empty($error)) {
@@ -69,9 +71,26 @@ class index {
     public function postRegister() {
         $ret = verify($_POST, [
             'u' => ['msg' => '用户名不能为空', 'sql' => 'username'],
-            'p' => ['regex' => ['/^[\\~!@#$%^&*()-_=+|{}\[\], .?\/:;\'\"\d\w]{6,16}$/', '密码不符合规范'], 'msg' => '请输入密码', 'sql' => 'password']
+            'p' => ['regex' => ['/^[\x20-\x7e]{6,16}$/', '密码不符合规范'], 'msg' => '请输入密码', 'sql' => 'password'],
+            'email' => [
+                'regex' => ['/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/', '邮箱格式不正确'],
+                'msg' => '请输入邮箱',
+                'sql' => 'email'
+            ]
         ], $data);
-
-
+        if ($ret === true) {
+            if ($userMsg = user::getUser($data['username'])) {
+                $ret = '用户名已经被注册';
+            } else {
+                if ($uid = user::register($data['username'], $data['password'], $data['email'])) {
+                    setcookie('token', user::createToken($uid), time() + 432000, getUrlRoot());
+                    setcookie('uid', $userMsg['uid'], time() + 432000, getUrlRoot());
+                    $ret = '注册成功';
+                } else {
+                    $ret = '注册失败';
+                }
+            }
+        }
+        return self::errorCode($ret);
     }
 }

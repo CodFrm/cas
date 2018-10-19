@@ -110,15 +110,40 @@ class route {
         return true;
     }
 
+    private static $pathInfo = "";
+
+    public static function path_info() {
+        if (!empty(static::$pathInfo)) {
+            return static::$pathInfo;
+        }
+        if (isset($_SERVER['PATH_INFO']) && !empty($_SERVER['PATH_INFO'])) {
+            return static::$pathInfo = $_SERVER['PATH_INFO'];
+        }
+        //如果没有pathinfo,自己处理通过请求的url处理
+        $pathInfo = $_SERVER['REQUEST_URI'];
+        //删除的url中的脚本路径和脚本名字
+        $scriptPath = substr($_SERVER['SCRIPT_NAME'], 0, strrpos($_SERVER['SCRIPT_NAME'], '/'));
+        $scriptName = substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], '/') + 1);
+        $pathInfo = substr($pathInfo, strlen($scriptPath));
+        if (($pos = strpos($pathInfo, $scriptName)) === 1) {
+            $pathInfo = '/' . substr($pathInfo, $pos + strlen($scriptName));
+        }
+        //删除get参数?
+        if ($pos = strrpos($pathInfo, '?')) {
+            $pathInfo = substr($pathInfo, 0, $pos);
+        }
+        return static::$pathInfo = $pathInfo;
+    }
+
     /**
      * 解析URL,加载控制类
      * @access public
      * @author Farmer
      */
     static function analyze() {
-        self::$req_method = strtolower(isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : '');
-        if (isset($_SERVER['PATH_INFO']) && !empty($_SERVER['PATH_INFO'])) {
-            $pathInfo = $_SERVER['PATH_INFO'];
+        self::$req_method = strtolower($_SERVER['REQUEST_METHOD']);
+        $pathInfo = self::path_info();
+        if (!empty($pathInfo) && $pathInfo != '/') {
             if (isset(self::$rule[self::$req_method])) {
                 $tmpRule = self::$rule[self::$req_method];
                 foreach ($tmpRule as $key => $value) {
@@ -173,8 +198,18 @@ class route {
         }
         try {
             input('get', $_GET);
-            if (sizeof($_POST) <= 0) {
-                parse_str(file_get_contents('php://input'), $_POST);
+            if ($_SERVER['REQUEST_METHOD'] != 'GET') {
+                $input = file_get_contents('php://input');
+                if (sizeof($_POST) <= 0 && $input != '') {
+                    if (strpos(isset($_SERVER['CONTENT_TYPE']) ? $_SERVER['CONTENT_TYPE'] : '', 'application/json') !== false) {
+                        $_POST = json_decode($input, true);
+                        if (!$_POST || sizeof($_POST) <= 0) {
+                            parse_str($input, $_POST);
+                        }
+                    } else {
+                        parse_str($input, $_POST);
+                    }
+                }
             }
             input('post', $_POST);
             $tmp = self::$classNamePace;
@@ -207,7 +242,7 @@ class route {
             } else {
                 echo $data;
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             if (input('config.debug')) {
                 if (input('config.log')) {
                     index::$log->error('[file] ' . $e->getFile() . ' [line] ' . $e->getLine() . ' [error] ' . $e->getMessage());

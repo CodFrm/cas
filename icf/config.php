@@ -14,9 +14,9 @@ return [
         'type' => 'mysql',
         'server' => 'localhost',
         'port' => 3306,
-        'db' => 'cas',
-        'user' => 'root',
-        'pwd' => '',
+        'db' => 'sql127_0_7_1',
+        'user' => 'sql127_0_7_1',
+        'pwd' => 'RyaEzwwESHeXB8BW',
         'prefix' => 'cas_'
     ],
     'rest' => true,

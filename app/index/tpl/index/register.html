@@ -8,21 +8,22 @@
 <body>
 <h2>页面就先随便弄一下,emmm</h2>
 <a href="https://github.com/CodFrm/cas">开源地址 欢迎给star</a>
-<h3>登录:</h3>
+<h3>注册:</h3>
 <form onsubmit="return push(this);" style="display: inline-block;">
     账号: <input type="text" name="u">
     <br><br>
     密码: <input type="text" name="p">
     <br><br>
-    <button onclick="window.location.href='/index/index/register';return false;">点我去注册</button>
-
-    <input style="float: right;" type="submit" value="登录">
+    邮箱: <input type="text" name="email">
+    <br><br>
+    <button onclick="window.location.href='/';return false;">点我去登录</button>
+    <input style="float: right" type="submit" value="注册">
 </form>
 
 <script>
     function push(form) {
         $.ajax({
-            url: "{:url('login')}",
+            url: "{:url('register')}",
             type: 'post',
             data: $(form).serialize(),
             success: function (obj) {

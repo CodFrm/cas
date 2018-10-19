@@ -45,6 +45,21 @@ class user extends model {
         return db::table('users')->where('uid', $user)->_or()->where('username', $user)->_or()->where('email', $user)->find();
     }
 
+    public static function register($u, $p, $email) {
+        db::table()->begin();
+        db::table('users')->insert([
+            'username' => $u,
+            'password' => 'tmp',
+            'email' => $email,
+            'avatar' => 'default.png',
+            'reg_time' => time()
+        ]);
+        $uid = db::lastinsertid();
+        db::table('users')->where('uid', $uid)->update(['password' => self::encodePwd($uid, $p)]);
+        db::table()->commit();
+        return $uid;
+    }
+
     /**
      * 通过uid获取用户数据
      * @param $uid

@@ -20,8 +20,8 @@ $home = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
 if (!empty($_SERVER['QUERY_STRING'])) {
     $home = substr($_SERVER['REQUEST_URI'], 0, strpos($home, '?'));
 }
-if (isset($_SERVER['PATH_INFO']) && !empty($_SERVER['PATH_INFO'])) {
-    $home = str_replace($_SERVER['PATH_INFO'], '', $home);
+if (!empty(route::path_info()) && route::path_info() != '/') {
+    $home = str_replace(route::path_info(), '', $home);
 } else {
     $home = substr($home, 0, strrpos($home, '/'));
 }

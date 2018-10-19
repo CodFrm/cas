@@ -28,13 +28,13 @@ class log {
             self::$filename = __ROOT_ . '/app/cache/log/' . self::$year . '/' . self::$month . '/' . self::$day . '.log';
             //检查缓存目录
             if (!file_exists(__ROOT_ . '/app/cache/log')) {
-                if (!mkdir(__ROOT_ . '/app/cache/log', 0777, true)) return;
+                if (!@mkdir(__ROOT_ . '/app/cache/log', 0777, true)) return;
             }
             if (!file_exists(__ROOT_ . '/app/cache/log/' . self::$year)) {
-                if (!mkdir(__ROOT_ . '/app/cache/log/' . self::$year, 0777, true)) return;
+                if (!@mkdir(__ROOT_ . '/app/cache/log/' . self::$year, 0777, true)) return;
             }
             if (!file_exists(__ROOT_ . '/app/cache/log/' . self::$year . '/' . self::$month)) {
-                if (!mkdir(__ROOT_ . '/app/cache/log/' . self::$year . '/' . self::$month, 0777, true)) return;
+                if (!@mkdir(__ROOT_ . '/app/cache/log/' . self::$year . '/' . self::$month, 0777, true)) return;
             }
             if (!@(self::$hFile = fopen(self::$filename, 'a+'))) {
                 self::$isWrite = false;
