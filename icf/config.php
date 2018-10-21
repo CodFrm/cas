@@ -26,5 +26,5 @@ return [
     'route' => ['get' => ['start' => 'index->sign->start']],
     'tpl_suffix' => 'html',
     'log' => false,
-    'url_style' => 1
+    'url_style' => 2
 ];
