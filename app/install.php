@@ -16,9 +16,10 @@ define('__ROOT_', realpath(__DIR__ . '/../'));
 define('__DEFAULT_MODULE_', 'index');
 
 ob_start();
-icf\index::run();
+@icf\index::run();
+ob_end_clean();
 
-$dbcontent = file_get_contents(__ROOT_ . "/db.sql");
+$dbcontent = explode(';', file_get_contents(__ROOT_ . "/db.sql"));
 foreach ($dbcontent as $sql) {
     \icf\lib\db::table()->query($sql);
 }
