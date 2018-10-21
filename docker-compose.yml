@@ -6,7 +6,7 @@ services:
       MYSQL_DATABASE: cas
       MYSQL_ROOT_PASSWORD: cas_docker_pwd
     networks:
-    - cas-network
+    - cas_network
 
   web:
     image: "codfrm/cas"
@@ -16,12 +16,12 @@ services:
       DB_PASSWORD: cas_docker_pwd
       DB_NAME: cas
     ports:
-    - "8088:80"
+    - 8088:80
     depends_on:
       - db
     networks:
-    - cas-network
+    - cas_network
 
 networks:
-  cas-network:
-
+  cas_network:
+    driver: bridge

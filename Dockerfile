@@ -1,4 +1,4 @@
-FROM codfrm/cas
+FROM codfrm/nginx-php
 
 LABEL maintainer="CodFrm <love@xloli.top>"
 
