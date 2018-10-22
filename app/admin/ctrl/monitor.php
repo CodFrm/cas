@@ -24,6 +24,7 @@ class monitor {
     public function start() {
         echo '监控启动';
         if (config('monitor_status') == 1) {
+            echo '正在运,结束';
             return '记录中是在运行';
         }
         config('monitor_status', 1);

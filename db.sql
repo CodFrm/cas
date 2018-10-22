@@ -68,7 +68,7 @@ CREATE TABLE `cas_config` (
 -- ----------------------------
 -- Records of cas_config
 -- ----------------------------
-INSERT INTO `cas_config` VALUES ('monitor_status', '1');
+INSERT INTO `cas_config` VALUES ('monitor_status', '0');
 INSERT INTO `cas_config` VALUES ('pwd_encode_salt', '#faxGht&cd');
 
 -- ----------------------------
