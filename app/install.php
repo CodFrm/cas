@@ -19,6 +19,17 @@ ob_start();
 icf\index::run();
 ob_end_clean();
 
+while (true) {
+    try {
+        \icf\lib\db::table();
+    } catch (Throwable $exception) {
+        echo "wait mysql service\n";
+        sleep(2);
+        continue;
+    }
+    break;
+}
+
 $dbcontent = explode(';', file_get_contents(__ROOT_ . "/db.sql"));
 foreach ($dbcontent as $sql) {
     try {
