@@ -12,7 +12,7 @@ return [
     'debug' => true,
     'db' => [
         'type' => 'mysql',
-        'server' => env('DB_SERVER'),
+        'server' => env('DB_HOST'),
         'port' => env('DB_PORT'),
         'db' => env('DB_NAME'),
         'user' => env('DB_USER'),

@@ -11,7 +11,7 @@ services:
   web:
     image: "codfrm/cas"
     environment:
-      DB_HOST: db:3306
+      DB_HOST: db
       DB_USER: root
       DB_PASSWORD: cas_docker_pwd
       DB_NAME: cas
