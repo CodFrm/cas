@@ -16,9 +16,9 @@ RUN apk add --no-cache git \
     && git clone https://github.com/CodFrm/cas.git /var/www/html \
     && cd html \
     && apk del git \
-    && php app/install.php \
     && chown www .env
 
 ENTRYPOINT php-fpm && nginx && cd html/ \
     && echo -e "DB_HOST=${DB_HOST}\nDB_USER=${DB_USER}\nDB_NAME=${DB_NAME}\nDB_PASSWORD=${DB_PASSWORD}\nDB_PREFIX=${DB_PREFIX}\nDB_PORT=${DB_PORT}" > .env \
+    && php app/install.php \
     && php start.php
