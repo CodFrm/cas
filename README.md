@@ -1,3 +1,9 @@
+[![](https://images.microbadger.com/badges/image/codfrm/cas.svg)](https://microbadger.com/images/codfrm/cas "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/codfrm/cas.svg)](https://microbadger.com/images/codfrm/cas "Get your own version badge on microbadger.com")
+[![GitHub stars](https://img.shields.io/github/stars/CodFrm/cas.svg)](https://github.com/CodFrm/cas/stargazers)
+[![GitHub license](https://img.shields.io/github/license/CodFrm/cas.svg)](https://github.com/CodFrm/cas/blob/master/LICENSE)
+
+
 # 云签到
 
 > cas(cloud add sign)
@@ -41,6 +47,14 @@ nohup php start.php > /dev/null 2>&1 &
 如果启动不成功,请在数据库中修```改cas_config```表的```monitor_status```,值修改为0,重新启动
 
 0为未启动,1为启动
+
+## 容器
+需要安装```docker```和```docker-compose```
+
+默认外部端口8088,具体可以修改目录下的```docker-compose.yml```文件
+```shell
+docker-compose up -d
+```
 
 ## 添加平台
 继承```app\common\BasePlatform```抽象类,实现里面的方法

@@ -10,7 +10,6 @@
 
 require_once realpath(__DIR__ . '/../') . '/icf/loader.php';
 
-echo realpath(__DIR__ . '/../') . '/icf/loader.php';
 //进入框架的入口
 define('__ROOT_', realpath(__DIR__ . '/../'));
 define('__DEFAULT_MODULE_', 'index');
