@@ -26,7 +26,7 @@ class BaiduPlatform extends BasePlatform {
         $this->httpRequest->setCookie($this->cookie);
         $this->httpRequest->setHeader([
             'Connection: keep-alive',
-            'User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1',
+            'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36',
             'Upgrade-Insecure-Requests: 1'
         ]);
         $data = $this->httpRequest->get('https://tieba.baidu.com/index/tbwise/forum');
